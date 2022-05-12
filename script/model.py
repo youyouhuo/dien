@@ -326,7 +326,7 @@ class Model_DIN(Model):
         # Attention layer
         with tf.name_scope('Attention_layer'):
             attention_output = din_attention(self.item_eb, self.item_his_eb, ATTENTION_SIZE, self.mask)
-            att_fea = tf.reduce_sum(attention_output, 1)
+            att_fea = tf.reduce_sum(attention_output, 1) #   [batch 1 embedding] -> [batch embedding]
             tf.summary.histogram('att_fea', att_fea)
         inp = tf.concat([self.uid_batch_embedded, self.item_eb, self.item_his_eb_sum, self.item_eb * self.item_his_eb_sum, att_fea], -1)
         # Fully connected layer
