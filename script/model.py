@@ -44,9 +44,9 @@ class Model(object):
             if self.use_negsampling:
                 self.noclk_cat_his_batch_embedded = tf.nn.embedding_lookup(self.cat_embeddings_var, self.noclk_cat_batch_ph)
 
-        self.item_eb = tf.concat([self.mid_batch_embedded, self.cat_batch_embedded], 1)
-        self.item_his_eb = tf.concat([self.mid_his_batch_embedded, self.cat_his_batch_embedded], 2)
-        self.item_his_eb_sum = tf.reduce_sum(self.item_his_eb, 1)
+        self.item_eb = tf.concat([self.mid_batch_embedded, self.cat_batch_embedded], 1)  #拼接item 和 cate信息
+        self.item_his_eb = tf.concat([self.mid_his_batch_embedded, self.cat_his_batch_embedded], 2)    #因为是序列，所以是在 axis=2的维度上拼接
+        self.item_his_eb_sum = tf.reduce_sum(self.item_his_eb, 1)    #求和后，batch sql embedding  -> 维度batch  embedding
         if self.use_negsampling:
             self.noclk_item_his_eb = tf.concat(
                 [self.noclk_mid_his_batch_embedded[:, :, 0, :], self.noclk_cat_his_batch_embedded[:, :, 0, :]], -1)# 0 means only using the first negative item ID. 3 item IDs are inputed in the line 24.
